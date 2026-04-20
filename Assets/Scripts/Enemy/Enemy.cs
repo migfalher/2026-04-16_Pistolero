@@ -11,12 +11,14 @@ public class Enemy : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        GameObject target = GameObject.Find("Player");
+        GameObject self = this.gameObject;
+        FSM = new EnemyStateVigilar(target, self, FSM_Materials);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        FSM = FSM.UpdateEvent();
     }
 }

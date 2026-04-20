@@ -46,7 +46,10 @@ public class Player : MonoBehaviour
     public void MoveInput(Context c)
     {
         Vector2 input = c.ReadValue<Vector2>().normalized;
-        bodyAngle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
+        if (!input.Equals(Vector2.zero))
+        {
+            bodyAngle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
+        }
         move = (new Vector3(input.x, SimulateGravity(), input.y)) * walkSpeed;
         bodyTransform.rotation = Quaternion.Euler(new Vector3(0, bodyAngle, 0));
     }
