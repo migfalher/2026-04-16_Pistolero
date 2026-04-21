@@ -60,14 +60,4 @@ public class EnemyStateDisparar : EnemyState
     {
         base.UpdateToExit();
     }
-
-    // ACTIONS
-    public IEnumerator Shoot()
-    {
-        while (true)
-        {
-            Debug.Log("Shoot");
-            yield return new WaitForSecondsRealtime(1f);
-        }
-    }
 }

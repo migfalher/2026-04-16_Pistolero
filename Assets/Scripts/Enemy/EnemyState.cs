@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -21,12 +22,13 @@ public class EnemyState
     protected NavMeshAgent NMA;
 
     // CONSTRUCTOR
-    public EnemyState(GameObject target, GameObject self, Material[] FSM_Material) {
+    public EnemyState(GameObject target, GameObject self, Material[] FSM_Material)
+    {
         this.target = target;
         this.self = self;
+        this.FSM_Materials = FSM_Material;
         NMA = self.GetComponent<NavMeshAgent>();
         NMA.updateRotation = false;
-        this.FSM_Materials = FSM_Material;
     }
 
     // EVENTS
