@@ -4,6 +4,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     // public components
+    public GameObject bullet;
     public Material[] FSM_Materials;
 
     // private attributes

@@ -145,6 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 471db670b6fcca34e88cbd988fe14a49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bullet: {fileID: 8396456479099565984, guid: 4022293504d6168479089c7d970bbc6e, type: 3}
   FSM_Materials:
   - {fileID: 2100000, guid: 97789ec49f7fdbd4fb086f63d8dd677f, type: 2}
   - {fileID: 2100000, guid: c67d96d7fe4c78c4f9e2206ee0850451, type: 2}

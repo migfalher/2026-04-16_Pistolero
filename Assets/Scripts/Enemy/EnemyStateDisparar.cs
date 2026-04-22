@@ -4,8 +4,8 @@ using UnityEngine;
 public class EnemyStateDisparar : EnemyState
 {
     // VARIABLES
-    float timeLimit = 1f; /* Time.deltaTime returns time in seconds (0.015), not in miliseconds (15) */
-    float timeCount = 1f;
+    float timeLimit = 4.5f; /* Time.deltaTime returns time in seconds (0.015), not in miliseconds (15) */
+    float timeCount = 5f;
     Vector3 dir;
     Quaternion rot;
 
@@ -42,7 +42,7 @@ public class EnemyStateDisparar : EnemyState
         // shoot when timeCount >= timeLimit
         if (timeCount >= timeLimit)
         {
-            Debug.Log("Shoot");
+            Shoot();
             timeCount = 0;
         }
         timeCount += Time.deltaTime;
@@ -59,5 +59,16 @@ public class EnemyStateDisparar : EnemyState
     protected override void UpdateToExit()
     {
         base.UpdateToExit();
+    }
+
+    // SHOOT
+    private void Shoot()
+    {
+        // throw bullet
+        Vector3 cannonPosition = self.transform.position + new Vector3(0, 0.8f, 0);
+        GameObject clone = GameObject.Instantiate(self.GetComponent<Enemy>().bullet, cannonPosition, Quaternion.identity);
+        Rigidbody rb = clone.GetComponent<Rigidbody>();
+        //clone.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        rb.AddForce((self.transform.forward * rb.mass * 10), ForceMode.Impulse);
     }
 }
