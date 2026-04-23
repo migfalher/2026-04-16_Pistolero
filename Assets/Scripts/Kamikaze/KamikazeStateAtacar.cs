@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI.Table;
 
@@ -8,8 +9,9 @@ public class KamikazeStateAtacar : KamikazeState
     Quaternion rot;
 
     // CONSTRUCTOR
-    public KamikazeStateAtacar(GameObject owner, GameObject self, Material[] FSM_Material) : base(owner, self, FSM_Material)
+    public KamikazeStateAtacar(GameObject owner, GameObject self, Material[] FSM_Material, GameObject target) : base(owner, self, FSM_Material)
     {
+        this.target = target;
         mesh.GetComponent<MeshRenderer>().material = FSM_Material[2];
         self.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         mesh.transform.Translate(new Vector3(0, -0.2f, 0), Space.Self);
@@ -21,9 +23,9 @@ public class KamikazeStateAtacar : KamikazeState
     protected override void UpdateToEnter()
     {
         // go to owner
-        NMA.SetDestination(owner.transform.position);
+        NMA.SetDestination(target.transform.position);
         // look at owner (excluding Y axis)
-        dir = owner.transform.position - self.transform.position;
+        dir = target.transform.position - self.transform.position;
         dir.y = 0;
         rot = Quaternion.LookRotation(dir);
         self.transform.rotation = rot;
@@ -33,15 +35,24 @@ public class KamikazeStateAtacar : KamikazeState
 
     protected override void UpdateToRunning()
     {
-        // go to owner
-        NMA.SetDestination(owner.transform.position);
-        // look at owner (excluding Y axis)
-        dir = owner.transform.position - self.transform.position;
-        dir.y = 0;
-        rot = Quaternion.LookRotation(dir);
-        self.transform.rotation = rot;
 
         base.UpdateToRunning();
+
+        if (target != null && !target.IsDestroyed())
+        {
+            // go to owner
+            NMA.SetDestination(target.transform.position);
+            // look at owner (excluding Y axis)
+            dir = target.transform.position - self.transform.position;
+            dir.y = 0;
+            rot = Quaternion.LookRotation(dir);
+            self.transform.rotation = rot;
+        }
+        else
+        {
+            nextState = new KamikazeStateSeguir(owner, self, FSM_Materials);
+            currentEvent = EVENT.EXIT;
+        }
     }
 
     protected override void UpdateToExit()

@@ -5,6 +5,7 @@ public class KamikazeState
 {
     // AGENTS
     protected GameObject owner;
+    protected GameObject target;
     protected GameObject self;
 
     // ACTIONS

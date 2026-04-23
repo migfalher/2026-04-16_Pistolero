@@ -22,7 +22,7 @@ public class Kamikaze : MonoBehaviour
         FSM = FSM.UpdateEvent();
     }
 
-    private void OnCollisionEnter(Collision coll)
+    private void OnTriggerEnter(Collider coll)
     {
         GameObject go = coll.gameObject;
         string tag = go.tag;

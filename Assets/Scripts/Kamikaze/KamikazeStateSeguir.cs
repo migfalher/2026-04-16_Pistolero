@@ -1,12 +1,12 @@
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI.Table;
+using System.Collections.Generic;
 
 public class KamikazeStateSeguir : KamikazeState
 {
     // VARIABLES
     Vector3 dir;
     Quaternion rot;
-    GameObject[] enemiesList;
+    List<GameObject> enemiesList;
 
     // CONSTRUCTOR
     public KamikazeStateSeguir(GameObject owner, GameObject self, Material[] FSM_Material) : base(owner, self, FSM_Material)
@@ -18,7 +18,7 @@ public class KamikazeStateSeguir : KamikazeState
     // ADD BEHAVIOUR TO EVENTS
     protected override void UpdateToEnter()
     {
-        enemiesList = GameObject.FindGameObjectsWithTag("Enemy");
+        enemiesList = new List<GameObject>();
 
         NMA.SetDestination(owner.transform.position);
 
@@ -37,17 +37,20 @@ public class KamikazeStateSeguir : KamikazeState
 
         base.UpdateToRunning();
 
+        enemiesList.Clear();
+
+        foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy")) { enemiesList.Add(enemy); }
+
         foreach (GameObject enemy in enemiesList)
         {
-            if (CompareDistance(enemy, 10f) <= 0)   // is it near enough?
+            if (CompareDistance(enemy, 10f) <= 0)
             {
                 Enemy enemyScript = enemy.GetComponent<Enemy>();
                 if (enemyScript.targetedByKamikaze) { Debug.Log(enemy.name + " already targeted"); } // is it occupied?
                 else
                 {
                     enemyScript.targetedByKamikaze = true;
-                    owner = enemy;
-                    nextState = new KamikazeStateAtacar(owner, self, FSM_Materials);
+                    nextState = new KamikazeStateAtacar(owner, self, FSM_Materials, enemy);
                     currentEvent = EVENT.EXIT;
                     return;
                 }
