@@ -18,11 +18,8 @@ public class EnemyStateDisparar : EnemyState
     // ADD BEHAVIOUR TO EVENTS
     protected override void UpdateToEnter()
     {
-        // step right there !!!
-        NMA.isStopped = true;
-        NMA.ResetPath();
-        NMA.SetDestination(self.transform.position);
-        NMA.velocity = Vector3.zero;
+        // give player some personal space
+        NMA.stoppingDistance = dispararDistance * 0.75f;
         // look at player (excluding Y axis)
         dir = target.transform.position - self.transform.position;
         dir.y = 0;
@@ -34,6 +31,8 @@ public class EnemyStateDisparar : EnemyState
 
     protected override void UpdateToRunning()
     {
+        // go to player
+        NMA.SetDestination(target.transform.position);
         // look at player (excluding Y axis)
         dir = target.transform.position - self.transform.position;
         dir.y = 0;
@@ -49,7 +48,7 @@ public class EnemyStateDisparar : EnemyState
 
         base.UpdateToRunning();
 
-        if (CompareDistance(8f) >= 1)
+        if (CompareDistance(perseguirDistance) >= 1)
         {
             currentEvent = EVENT.EXIT;
             nextState = new EnemyStatePerseguir(target, self, FSM_Materials);
@@ -58,6 +57,7 @@ public class EnemyStateDisparar : EnemyState
 
     protected override void UpdateToExit()
     {
+        NMA.stoppingDistance = 0;
         base.UpdateToExit();
     }
 
@@ -65,10 +65,8 @@ public class EnemyStateDisparar : EnemyState
     private void Shoot()
     {
         // throw bullet
-        Vector3 cannonPosition = self.transform.position + new Vector3(0, 0.8f, 0);
-        GameObject clone = GameObject.Instantiate(self.GetComponent<Enemy>().bullet, cannonPosition, Quaternion.identity);
+        GameObject clone = GameObject.Instantiate(self.GetComponent<Enemy>().bullet, origin.position, Quaternion.identity);
         Rigidbody rb = clone.GetComponent<Rigidbody>();
-        //clone.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         rb.AddForce((self.transform.forward * rb.mass * 10), ForceMode.Impulse);
     }
 }

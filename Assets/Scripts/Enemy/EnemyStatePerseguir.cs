@@ -40,13 +40,13 @@ public class EnemyStatePerseguir : EnemyState
 
         base.UpdateToRunning();
 
-        if (CompareDistance(3f) <= 0)
+        if (CompareDistance(dispararDistance) <= 0)
         {
             currentEvent = EVENT.EXIT;
 
             nextState = new EnemyStateDisparar(target, self, FSM_Materials);
         }
-        else if(CompareDistance(10f) >= 1)
+        else if(CompareDistance(vigilarDistance) >= 1)
         {
             currentEvent = EVENT.EXIT;
 

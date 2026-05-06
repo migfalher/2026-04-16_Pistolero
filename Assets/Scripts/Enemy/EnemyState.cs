@@ -20,6 +20,10 @@ public class EnemyState
     protected EnemyState nextState;
     protected Material[] FSM_Materials;
     protected NavMeshAgent NMA;
+    protected Transform origin;
+    protected float vigilarDistance = 20f;
+    protected float perseguirDistance = 12f;
+    protected float dispararDistance = 5f;
 
     // CONSTRUCTOR
     public EnemyState(GameObject target, GameObject self, Material[] FSM_Material)
@@ -29,6 +33,7 @@ public class EnemyState
         this.FSM_Materials = FSM_Material;
         NMA = self.GetComponent<NavMeshAgent>();
         NMA.updateRotation = false;
+        origin = self.transform.GetChild(0).transform;
     }
 
     // EVENTS

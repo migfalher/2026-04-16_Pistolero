@@ -654,8 +654,19 @@
                 },
                 {
                     "name": "",
+                    "id": "20aab639-b314-4b8d-9a8d-69736486fca3",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "d658421c-ccf4-4114-ad8d-fdfd06f05e06",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",

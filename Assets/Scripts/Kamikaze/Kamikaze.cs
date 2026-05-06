@@ -17,7 +17,7 @@ public class Kamikaze : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         FSM = FSM.UpdateEvent();
     }

@@ -1,16 +1,20 @@
 using UnityEngine;
+using System.Collections.Generic;
 using Context = UnityEngine.InputSystem.InputAction.CallbackContext;
 using Phase = UnityEngine.InputSystem.InputActionPhase;
 
 public class Player : MonoBehaviour
 {
     // Public objects
+    public GameObject bullet;
     public Camera mainCamera;
 
     // Attributes
     private CharacterController characterController;
+    private Rigidbody rigidbody;
     private Transform bodyTransform;
     private Transform cannonTransform;
+    private List<Transform> originsTransforms;
 
     // Private variables
     private float walkSpeed = 5.0f;
@@ -23,13 +27,18 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (bullet != null) { bullet.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); }
         characterController = GetComponent<CharacterController>();
+        rigidbody = GetComponent<Rigidbody>();
         bodyTransform = transform.GetChild(0).transform;
         cannonTransform = transform.GetChild(1).transform;
+        originsTransforms = new List<Transform>();
+        originsTransforms.Add(transform.GetChild(1).GetChild(0).transform);
+        originsTransforms.Add(transform.GetChild(1).GetChild(1).transform);
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         MoveAction(move * Time.deltaTime);
         RotateAction(cannonAngle * Time.deltaTime);
@@ -58,6 +67,20 @@ public class Player : MonoBehaviour
     {
         float input = c.ReadValue<float>();
         cannonAngle = rotationSpeed * input;
+    }
+
+    public void ShootInput(Context c)
+    {
+        if (c.phase.Equals(Phase.Started))
+        {
+            // throw bullet(s)
+            foreach (Transform origin in originsTransforms)
+            {
+                GameObject clone = GameObject.Instantiate(this.GetComponent<Player>().bullet, origin.position, Quaternion.identity);
+                Rigidbody rb = clone.GetComponent<Rigidbody>();
+                rb.AddForce((cannonTransform.forward * rb.mass * 10), ForceMode.Impulse);
+            }
+        }
     }
 
     // Action methods that respond to input methods

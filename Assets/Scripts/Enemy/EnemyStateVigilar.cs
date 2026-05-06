@@ -24,7 +24,7 @@ public class EnemyStateVigilar : EnemyState
     {
         base.UpdateToRunning();
 
-        if (CompareDistance(10f) <= 0)
+        if (CompareDistance(perseguirDistance) <= 0)
         {
             nextState = new EnemyStatePerseguir(target, self, FSM_Materials);
             currentEvent = EVENT.EXIT;
